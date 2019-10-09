@@ -1,0 +1,13 @@
+{% extends 'admin/base.html.twig' %}
+{% block body %}
+    <div class="container">
+        <div class="col-auto">
+    {{ form_start(form) }}
+    {{ form_end(form) }}
+    {% if image is defined %}
+        Image Preview:<br>
+        <img style="width: 100%;" src="/uploads/images/{{ image.category.name }}/{{ image.image }}" alt="">
+    {% endif %}
+        </div>
+    </div>
+{% endblock %}

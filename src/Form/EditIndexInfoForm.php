@@ -1,13 +1,19 @@
 <?php
 
+/*
+ * This file is part of the "Stylish Portfolio" project.
+ * (c) Dzhezar Kadyrov <dzhezik@gmail.com>
+ */
 
 namespace App\Form;
 
-
-use App\DTO\EditIndexInfoForm as EditIndexInfoFormDto;
+use App\DTO\IndexInfo;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,30 +23,44 @@ class EditIndexInfoForm extends AbstractType
     {
         $builder
             ->add(
-                'mainImg1',
-                FileType::class,
-                ['required' => false])
+                'facebook',
+                TextType::class,
+                ['required' => false]
+            )
             ->add(
-                'mainImg2',
-                FileType::class,
-                ['required' => false])
+                'instagram',
+                TextType::class,
+                ['required' => false]
+            )
             ->add(
-                'mainImg3',
+                'mail',
+                EmailType::class,
+                ['required' => false]
+            )
+            ->add(
+                'tumblr',
+                TextType::class,
+                ['required' => false]
+            )
+            ->add(
+                'mainImg',
                 FileType::class,
-                ['required' => false])
+                ['required' => false]
+            )
             ->add(
                 'aboutMe',
                 TextareaType::class,
                 ['attr' =>
-                    ['rows' => 3, 'class' => 'summernote']])
+                    ['rows' => 3, 'class' => 'summernote'], ]
+            )
+            ->add('save', SubmitType::class)
             ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => EditIndexInfoFormDto::class,
+            'data_class' => IndexInfo::class,
         ]);
     }
-
 }

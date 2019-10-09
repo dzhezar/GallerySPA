@@ -1,0 +1,49 @@
+{% extends 'admin/base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+    <!-- DataTables Example -->
+    <div class="card mb-3">
+        <div class="card-header row">
+            <p class="header h3 col-lg-3 col-sm-12 m-auto" >
+                {% if categoryName is defined %}
+                    {{ categoryName.name }}
+                {% else %}
+                    All Single Photos
+                {% endif %}
+            </p>
+            <div class="col-lg-9 col-sm-12 text-right">
+                <a class="btn btn-primary btn-lg btn text-light" href="{{ path('addSinglePhotos') }}">Add Photos</a>
+                {% if categoryName is defined %}
+                    <a class="btn btn-warning btn-lg btn text-light" href="{{ path('editCategory', {'slug' : categoryName.slug}) }}">Edit Category</a>
+                    <a class="btn btn-danger btn-lg btn text-light" href="{{ path('deleteCategory', {'slug' : categoryName.slug}) }}">Delete Category</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Image Preview</th>
+                        <th>Manipulations</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for photo in photos %}
+                        <tr>
+                            <td>{{ photo.category.name }}</td>
+{#                            <td><input class="set_posted" id="{{ photoshoot.id }}" type="checkbox" {% if photoshoot.isPosted == true %}checked{% endif %} data-toggle="toggle"></td>#}
+                            <td><img style="height: 200px;width: 200px; object-fit: contain" src ='/uploads/images/{{ photo.category.name }}/{{ photo.image }}'></td>
+                            <td><a class="btn btn-info text-light" href="{{ path('editSinglePhotos', {'id': photo.id}) }}">Edit Category</a>
+                                <br><br><a class="btn btn-danger text-light" href="{{ path('deleteSinglePhotos', {'id': photo.id}) }}">Delete</a></td>
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {{ knp_pagination_render(photos) }}
+    </div>
+{% endblock %}

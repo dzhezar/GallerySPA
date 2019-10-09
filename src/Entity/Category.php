@@ -12,7 +12,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Category\CategoryRepository")
  */
@@ -36,11 +35,6 @@ class Category
     private $photoshoots;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $description;
-
-    /**
      * @Gedmo\Slug(fields={"Name"})
      * @ORM\Column(type="string", length=255)
      */
@@ -51,10 +45,16 @@ class Category
      */
     private $is_visible;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\PhotoshootImage", mappedBy="category")
+     */
+    private $singleImages;
+
 
     public function __construct()
     {
         $this->photoshoots = new ArrayCollection();
+        $this->singleImages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -105,17 +105,6 @@ class Category
         return $this;
     }
 
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
-    }
 
     public function getSlug(): ?string
     {
@@ -125,7 +114,6 @@ class Category
     public function setSlug($slug): void
     {
         $this->slug = $slug;
-
     }
 
     public function getIsVisible(): ?bool
@@ -136,6 +124,37 @@ class Category
     public function setIsVisible(bool $is_visible): self
     {
         $this->is_visible = $is_visible;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PhotoshootImage[]
+     */
+    public function getSingleImages(): Collection
+    {
+        return $this->singleImages;
+    }
+
+    public function addSingleImage(PhotoshootImage $singleImage): self
+    {
+        if (!$this->singleImages->contains($singleImage)) {
+            $this->singleImages[] = $singleImage;
+            $singleImage->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSingleImage(PhotoshootImage $singleImage): self
+    {
+        if ($this->singleImages->contains($singleImage)) {
+            $this->singleImages->removeElement($singleImage);
+            // set the owning side to null (unless already changed)
+            if ($singleImage->getCategory() === $this) {
+                $singleImage->setCategory(null);
+            }
+        }
 
         return $this;
     }

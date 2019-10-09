@@ -9,23 +9,21 @@ namespace App\Form;
 
 use App\DTO\AddPhotoshootForm as AddPhotoshootFormDto;
 use App\Entity\Category;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\Category\CategoryRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-
 class AddPhotoshootForm extends AbstractType
 {
-    private $em;
+    private $categoryRepository;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(CategoryRepository $categoryRepository)
     {
-        $this->em = $em;
+        $this->categoryRepository = $categoryRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -38,10 +36,10 @@ class AddPhotoshootForm extends AbstractType
                     /* @var Category $category */
                     return $category->getName();
                 },
-                'placeholder' => 'Choose an option'
+                'placeholder' => 'Choose an option',
             ])
-            ->add('shortDescription', TextType::class,[
-                'attr' => ['maxlength' => 255]
+            ->add('shortDescription', TextType::class, [
+                'attr' => ['maxlength' => 255],
             ])
             ->add('images', FileType::class, [
                 'label' => 'Images',
@@ -59,6 +57,17 @@ class AddPhotoshootForm extends AbstractType
 
     private function getCategories()
     {
-        return $this->em->getRepository(Category::class)->findAll();
+        $categories = $this->categoryRepository->findAll();
+        $array = [];
+
+        foreach ($categories as $category) {
+            $photoshoots = $category->getSingleImages();
+
+            if ($photoshoots->isEmpty()) {
+                \array_push($array, $category);
+            }
+        }
+
+        return $array;
     }
 }

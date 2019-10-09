@@ -1,5 +1,5 @@
 {
-    "name": "Portffolio",
+    "name": "dzhezar/portfolio",
     "type": "project",
     "license": "MIT",
     "authors": [
@@ -12,7 +12,9 @@
     "require": {
         "php": "^7.2.15",
         "ext-ctype": "*",
+        "ext-curl": "*",
         "ext-iconv": "*",
+        "ext-json": "*",
         "knplabs/knp-paginator-bundle": "^3.0",
         "sensio/framework-extra-bundle": "^5.1",
         "stof/doctrine-extensions-bundle": "^1.3@dev",
@@ -28,19 +30,15 @@
         "symfony/process": "*",
         "symfony/security-bundle": "*",
         "symfony/serializer-pack": "*",
-        "symfony/swiftmailer-bundle": "^3.1",
         "symfony/translation": "*",
         "symfony/twig-bundle": "*",
         "symfony/validator": "*",
         "symfony/web-link": "*",
-        "symfony/yaml": "*",
-        "ext-curl": "*",
-        "ext-json": "*"
+        "symfony/webpack-encore-bundle": "dev-master",
+        "symfony/yaml": "*"
     },
     "require-dev": {
-        "doctrine/doctrine-fixtures-bundle": "^3.1@dev",
         "friendsofphp/php-cs-fixer": "^2.15@dev",
-        "fzaninotto/faker": "^1.9@dev",
         "symfony/debug-pack": "*",
         "symfony/maker-bundle": "^1.0",
         "symfony/profiler-pack": "*",

@@ -7,101 +7,110 @@
 
 namespace App\Controller;
 
-use App\DTO\ContactForm as ContactFormDto;
-use App\Form\ContactForm;
+use App\PhotoshootImage\PhotoshootImageCollection;
+use App\PhotoshootImage\PhotoshootImageMapper;
+use App\Photoshot\PhotoshootCollection;
+use App\Photoshot\PhotoshootMapper;
 use App\Repository\Category\CategoryRepository;
-use App\Service\HomePage\HomePageServiceInterface;
-use App\Service\Mailer\MailerServiceInterface;
-use Knp\Component\Pager\PaginatorInterface;
+use App\Repository\Photoshoot\PhotoshootRepository;
+use App\Repository\PhotoshootImage\PhotoshootImageRepository;
+use App\Service\AdminService\CommonInfoService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
 {
-    public function index(HomePageServiceInterface $service, Request $request): Response
+    /**
+     * @Route(path="/{spa_route}", name="spa", requirements={ "spa_route" = "^(?!.*(api.*|admin.*)$).*" })
+     *
+     * @return Response
+     */
+    public function index(): Response
     {
-        $mainPhotoshoots = $service->getPhotoshoots(4);
-        $aboutMe = $service->getMainPageInfo()->getAboutMe();
-        $mainImgs = $service->getIndexImg();
-        $firstImg = $mainImgs->getMainImg1();
-        $otherImgs = array_filter([$mainImgs->getMainImg2(),$mainImgs->getMainImg3()]);
-        $sneakPeaks = $service->getSneakPeaks(5);
-        $formDto = new ContactFormDto();
-        $form = $this->createForm(ContactForm::class, $formDto);
-        $form->handleRequest($request);
-
-        return $this->render('index.html.twig', [
-            'aboutMe' => $aboutMe,
-            'firstImg' => $firstImg,
-            'otherImages' => $otherImgs,
-            'mainPhotoshoots' => $mainPhotoshoots,
-            'mainSneakPeaks' => $sneakPeaks,
-            'contactForm' =>$form->createView(),
-        ]);
+        return $this->render('spa/spa');
     }
-
-    public function sendMail(Request $request, MailerServiceInterface $mailerService)
-    {
-        $name = $request->get('name');
-        $email = $request->get('email');
-        $text = $request->get('text');
-
-        $mailerService->mail($name,$email,$text);
-        return new Response();
-    }
-
-    public function showPortfolio(Request $request, HomePageServiceInterface $service, PaginatorInterface $paginator, CategoryRepository $categoryRepository): Response
-    {
-        $photoshoots = $service->getPhotoshoots();
-        $backstage = $service->getSneakPeaks();
-        $categories = $categoryRepository->findBy(['is_visible' => 1]);
-        $pagination = $paginator->paginate($photoshoots->getPhotoshoots(), $request->query->getInt('page', 1), 12);
-        $pagination->setCustomParameters([
-            'rounded' => true,
-        ]);
-
-        return $this->render('portfolio.html.twig', [
-            'pagination' => $pagination,
-            'categories' => $categories,
-            'backstage' => $backstage,
-        ]);
-    }
-
-    public function showBackstagePortfolio(Request $request, HomePageServiceInterface $service, PaginatorInterface $paginator, CategoryRepository $categoryRepository)
-    {
-        $photoshoots = $service->getSneakPeaks();
-        $categoryName = 'Backstage';
-        $categories = $categoryRepository->findBy(['is_visible' => 1]);
-        $pagination = $paginator->paginate($photoshoots->getPhotoshoots(), $request->query->getInt('page', 1), 12);
-        $pagination->setCustomParameters([
-            'rounded' => true,
-        ]);
-
-        return $this->render('portfolio.html.twig', [
-            'pagination' => $pagination,
-            'categories' => $categories,
-            'categoryName' => $categoryName,
-            'backstage' => $photoshoots,
-        ]);
-    }
-
-    public function showPortfolioCategory(string $slug, Request $request, HomePageServiceInterface $service, PaginatorInterface $paginator, CategoryRepository $categoryRepository)
-    {
-        $photoshoots = $service->getPhotoshootsByCategory($slug);
-        $categories = $categoryRepository->findBy(['is_visible' => 1]);
-        $backstage = $service->getSneakPeaks();
-        $categoryName = $categoryRepository->findOneBy(['slug' => $slug])->getName();
-        $pagination = $paginator->paginate($photoshoots->getPhotoshoots(), $request->query->getInt('page', 1), 12);
-        $pagination->setCustomParameters([
-            'rounded' => true,
-        ]);
-
-        return $this->render('portfolio.html.twig', [
-            'pagination' => $pagination,
-            'categoryName' => $categoryName,
-            'categories' => $categories,
-            'backstage' => $backstage,
-        ]);
-    }
+//    public function index(CommonInfoService $commonInfoService, PhotoshootImageRepository $imageRepository): Response
+//    {
+//        $facebook = $commonInfoService->getParameter('facebook');
+//        $instagram = $commonInfoService->getParameter('instagram');
+//        $mail = $commonInfoService->getParameter('mail');
+//        $tumblr = $commonInfoService->getParameter('tumblr');
+//        $mainImg = $commonInfoService->getParameter('main_img');
+//        $images = $imageRepository->findBy(['Photoshoot' => null]);
+//        [$collection, $first] = $this->makeImageCollection($images);
+//
+//
+//
+//        return $this->render('carousel.html.twig', [
+//            'facebook' => $facebook,
+//            'instagram' => $instagram,
+//            'mail' => $mail,
+//            'tumblr' => $tumblr,
+//            'main_img' => $mainImg,
+//            'images' => $collection,
+//            'first' =>$first,
+//        ]);
+//    }
+//
+//    public function showPortfolioCategory(string $category, CategoryRepository $categoryRepository, PhotoshootRepository $photoshootRepository, CommonInfoService $commonInfoService)
+//    {
+//        $facebook = $commonInfoService->getParameter('facebook');
+//        $instagram = $commonInfoService->getParameter('instagram');
+//        $mail = $commonInfoService->getParameter('mail');
+//        $tumblr = $commonInfoService->getParameter('tumblr');
+//        $category = $categoryRepository->findOneBy(['slug' => $category]);
+//
+//        if (false === $category->getSingleImages()->isEmpty()) {
+//            $images = $category->getSingleImages();
+//            [$collection,$first] = $this->makeImageCollection($images->toArray());
+//
+//
+//            return $this->render('carousel.html.twig', [
+//                'facebook' => $facebook,
+//                'instagram' => $instagram,
+//                'mail' => $mail,
+//                'tumblr' => $tumblr,
+//                'images' => $collection,
+//                'first' =>$first,
+//            ]);
+//        }
+//        $photoshoots = $photoshootRepository->findBy(['Category' => $category, 'IsPosted' => true]);
+//        $collection = new PhotoshootCollection();
+//        $mapper = new PhotoshootMapper();
+//
+//        foreach ($photoshoots as $photoshoot) {
+//            $collection->addPhotoshoot($mapper->entityToDto($photoshoot));
+//        }
+//
+//        return $this->render('portfolio.html.twig', [
+//            'photoshoots' => $collection,
+//            'facebook' => $facebook,
+//            'instagram' => $instagram,
+//            'mail' => $mail,
+//            'tumblr' => $tumblr,
+//        ]);
+//    }
+//
+//    public function renderHeader(CategoryRepository $categoryRepository)
+//    {
+//        $categories = $categoryRepository->findBy(['is_visible' => true]);
+//
+//        return $this->render('header.html.twig', [
+//            'categories' => $categories,
+//        ]);
+//    }
+//
+//    private function makeImageCollection(array $images)
+//    {
+//        $collection = new PhotoshootImageCollection();
+//        $mapper = new PhotoshootImageMapper();
+//
+//        foreach ($images as $image) {
+//            $collection->addPhotoshot($mapper->entityToSinglePhotoDto($image));
+//        }
+//        $first = $collection->shift();
+//
+//        return [$collection,$first];
+//    }
 }

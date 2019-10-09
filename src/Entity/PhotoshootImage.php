@@ -22,8 +22,7 @@ class PhotoshootImage
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Photoshoot", inversedBy="photoshotImages")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Photoshoot", inversedBy="photoshootImages")
      */
     private $Photoshoot;
 
@@ -31,6 +30,11 @@ class PhotoshootImage
      * @ORM\Column(type="string", length=255)
      */
     private $image;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="singleImages")
+     */
+    private $category;
 
     public function getId(): ?int
     {
@@ -57,6 +61,18 @@ class PhotoshootImage
     public function setImage(string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

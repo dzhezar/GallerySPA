@@ -1,34 +1,37 @@
 <?php
 
+/*
+ * This file is part of the "Stylish Portfolio" project.
+ * (c) Dzhezar Kadyrov <dzhezik@gmail.com>
+ */
 
 namespace App\Service\AdminService;
 
-
 use App\DTO\EditCategoryForm;
-use App\DTO\EditIndexInfoForm;
 use App\DTO\EditPhotoshootForm;
+use App\DTO\EditSinglePhotoForm;
 use App\Entity\Category;
-use App\Repository\MainPageRepository;
+use App\Entity\PhotoshootImage;
 use App\Repository\Photoshoot\PhotoshootRepository;
 use App\Repository\PhotoshootImage\PhotoshootImageRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AdminPanelEditService implements AdminPanelEditServiceInderface
 {
-
     private $photoshootRepository;
     private $imageRepository;
     private $em;
-    private $indexRepository;
     private $targetDirectory;
+    private $imagesDirectory;
 
-    public function __construct(PhotoshootRepository $photoshootRepository, PhotoshootImageRepository $imageRepository, EntityManagerInterface $em, MainPageRepository $indexRepository, $targetDirectory)
+    public function __construct(PhotoshootRepository $photoshootRepository, PhotoshootImageRepository $imageRepository, EntityManagerInterface $em, $targetDirectory, $imagesDirectory)
     {
         $this->photoshootRepository = $photoshootRepository;
         $this->imageRepository = $imageRepository;
         $this->em = $em;
-        $this->indexRepository = $indexRepository;
         $this->targetDirectory = $targetDirectory;
+        $this->imagesDirectory = $imagesDirectory;
     }
 
     public function getTargetDirectory()
@@ -36,14 +39,17 @@ class AdminPanelEditService implements AdminPanelEditServiceInderface
         return $this->targetDirectory;
     }
 
+    public function getImagesDirectory()
+    {
+        return $this->imagesDirectory;
+    }
+
     public function editPhotoshoot(int $id, EditPhotoshootForm $form)
     {
         $photoshoot = $this->photoshootRepository->findOneBy(['id' => $id]);
         $photoshoot
             ->setTitle($form->getTitle())
-            ->setCategory($form->getCategory())
-            ->setShortDescription($form->getShortDescription())
-            ->setBackstage($form->isBackstage());
+            ->setCategory($form->getCategory());
         $this->em->persist($photoshoot);
         $this->em->flush();
     }
@@ -53,38 +59,21 @@ class AdminPanelEditService implements AdminPanelEditServiceInderface
         return $this->imageRepository->findBy(['Photoshoot' => $id]);
     }
 
-    public function editIndexInfo(EditIndexInfoForm $form)
+    public function editIndexInfo(UploadedFile $file)
     {
-        $indexInfo = $this->indexRepository->findOneBy([]);
-        if ($form->getMainImg1() != null) {
-            $filename1 = sha1(uniqid()) . '.' . $form->getMainImg1()->guessExtension();
-            $form->getMainImg1()->move($this->getTargetDirectory(), $filename1);
-            if (file_exists($this->getTargetDirectory().'/'.$indexInfo->getMainImage1())){
-                unlink($this->getTargetDirectory().'/'.$indexInfo->getMainImage1());
-            }
-            $indexInfo->setMainImage1($filename1);
-        }
-        if ($form->getMainImg2() != null) {
-            $filename2 = sha1(uniqid()) . '.' . $form->getMainImg2()->guessExtension();
-            $form->getMainImg2()->move($this->getTargetDirectory(), $filename2);
-            if (file_exists($this->getTargetDirectory().'/'.$indexInfo->getMainImage2())) {
-                unlink($this->getTargetDirectory() . '/' . $indexInfo->getMainImage2());
-            }
-            $indexInfo->setMainImage2($filename2);
-        }
-        if ($form->getMainImg3() != null) {
-            $filename3 = sha1(uniqid()) . '.' . $form->getMainImg3()->guessExtension();
-            $form->getMainImg3()->move($this->getTargetDirectory(), $filename3);
-            if (file_exists($this->getTargetDirectory().'/'.$indexInfo->getMainImage3())) {
-                unlink($this->getTargetDirectory() . '/' . $indexInfo->getMainImage3());
-            }
-            $indexInfo->setMainImage3($filename3);
-        }
-        $indexInfo
-            ->setAboutMe($form->getAboutMe());
+        $filename = \sha1(\uniqid()) . '.' . $file->guessExtension();
+        $dirFiles = $files = \array_diff(\scandir($this->getTargetDirectory()), ['.', '..']);
 
-        $this->em->persist($indexInfo);
-        $this->em->flush();
+        if (empty($dirFiles)) {
+            $file->move($this->getTargetDirectory(), $filename);
+        } else {
+            foreach ($dirFiles as $item) {
+                \unlink($this->getTargetDirectory() . '/' . $item);
+            }
+            $file->move($this->getTargetDirectory(), $filename);
+        }
+
+        return $filename;
     }
 
     public function editCategory(string $slug, EditCategoryForm $form)
@@ -93,6 +82,16 @@ class AdminPanelEditService implements AdminPanelEditServiceInderface
         $category->setName($form->getName())
                  ->setIsVisible($form->IsVisible());
         $this->em->persist($category);
+        $this->em->flush();
+    }
+
+    public function editSinglePhoto(PhotoshootImage $image, EditSinglePhotoForm $form)
+    {
+        $old_path = $this->getImagesDirectory() . '/' . $image->getCategory()->getName() . '/' . $image->getImage();
+        $new_path = $this->getImagesDirectory() . '/' . $form->getCategory()->getName() . '/' . $image->getImage();
+        \rename($old_path, $new_path);
+        $image->setCategory($form->getCategory());
+        $this->em->persist($image);
         $this->em->flush();
     }
 }

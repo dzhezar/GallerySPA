@@ -2,8 +2,5 @@
     {% for category in categories %}
         <a class="dropdown-item" href="{{ path('adminPortfolioCategory', {'slug' : category.slug}) }}">{{ category.name }}</a>
     {% endfor %}
-    {% if backstage is not empty %}
-        <a class="dropdown-item" href="{{ path('adminBackstages') }}">Backstages</a>
-    {% endif %}
     <a class="dropdown-item" href="{{ path('addCategory') }}">Add Category</a>
 </div>

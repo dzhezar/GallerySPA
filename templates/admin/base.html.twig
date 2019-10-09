@@ -31,7 +31,7 @@
 
     <a class="navbar-brand mr-1" href="{{ path('admin') }}">Admin Panel</a>
 
-    <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
+    <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle">
         <i class="fas fa-bars"></i>
     </button>
 
@@ -48,7 +48,7 @@
             </a>
         </li>
         <li class="nav-item active">
-            <a class="nav-link" href="{{ path('editIndexInfo') }}">
+            <a class="nav-link" href="{{ path('editIndexInfo',{'type' : 'edit' }) }}">
                 <i class="far fa-question-circle"></i>
                 <span>Edit Index Info</span>
             </a>
@@ -61,6 +61,12 @@
             <div id="categoryMenu">
                 {{ render(controller('App\\Controller\\Admin\\AdminController::categoryMenu')) }}
             </div>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link" href="{{ path('adminSinglePhotos') }}">
+                <i class="far fa-question-circle"></i>
+                <span>Manage Single Photos</span>
+            </a>
         </li>
     </ul>
 
@@ -103,7 +109,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/startbootstrap-sb-admin@5.0.3/js/sb-admin.min.js"></script>
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-<script src="{{ asset('js/stylish-portfolio.js') }}"></script>
+<script src="{{ asset('js/grid-page.js') }}"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>
 <script>
     $(document).ready(function () {
@@ -121,6 +127,23 @@
         codemirror: {
             theme: 'paper'
         }
+    });
+
+    $('.set_posted').change(function () {
+        let value = $(this).prop('checked');
+        let id = $(this).attr('id');
+        if(value === true)
+            value = 1;
+        else
+            value = 0;
+        $.ajax({
+                url:'/admin/is_posted',
+                data: {
+                    id: id,
+                    is_posted: value,
+                }
+            }
+        )
     });
 </script>
 

@@ -7,8 +7,6 @@
                 <p class="header h3 col-lg-3 col-sm-12 m-auto" >
                     {% if categoryName is defined %}
                     {{ categoryName.name }}
-                    {% elseif backstage is defined %}
-                        Backstages
                     {% else %}
                         All Photoshoots
                     {% endif %}
@@ -28,7 +26,6 @@
                         <tr>
                             <th>Title</th>
                             <th>Category</th>
-                            <th>Short Description</th>
                             <th>Is Posted</th>
                             <th>Publication Date</th>
                             <th>Image Preview</th>
@@ -40,12 +37,11 @@
                         <tr>
                             <td>{{ photoshoot.title }}</td>
                             <td>{{ photoshoot.category.name }}</td>
-                            <td>{{ photoshoot.shortDescription }}</td>
                             <td><input class="set_posted" id="{{ photoshoot.id }}" type="checkbox" {% if photoshoot.isPosted == true %}checked{% endif %} data-toggle="toggle"></td>
                             <td>{{ photoshoot.publicationDate.format('d/m/y') }}</td>
                             <td><img style="height: 200px;width: 200px; object-fit: contain" src ='/uploads/images/{{ photoshoot.id }}/{{ photoshoot.images.shift.image }}'></td>
                             <td><a class="btn btn-info text-light" href="{{ path('editPhotoshoot', {'id': photoshoot.id}) }}">Edit Info</a>
-                            <br><br><a class="btn btn-warning text-light" href="{{ path('editPhotoshootImages', {'id': photoshoot.id}) }}">Edit Photos</a>
+                            <br><br><a class="btn btn-warning text-light" href="{{ path('editPhotoshootImages', {'id': photoshoot.id}) }}">Manage Photos</a>
                             <br><br><a class="btn btn-danger text-light" href="{{ path('deletePhotoshoot', {'id': photoshoot.id}) }}">Delete</a></td>
 
                         </tr>

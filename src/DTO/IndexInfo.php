@@ -1,49 +1,88 @@
 <?php
 
+/*
+ * This file is part of the "Stylish Portfolio" project.
+ * (c) Dzhezar Kadyrov <dzhezik@gmail.com>
+ */
 
 namespace App\DTO;
 
-
 class IndexInfo
 {
-    private $mainImg1;
-    private $mainImg2;
-    private $mainImg3;
+    private $facebook;
+    private $instagram;
+    private $mail;
+    private $tumblr;
+    private $main_img;
+    private $about_me;
 
-    public function __construct($mainImg1 = null, $mainImg2 = null, $mainImg3 = null)
+    public function __construct($facebook, $instagram, $mail, $tumblr, $about_me, $main_img = null)
     {
-        $this->mainImg1 = $mainImg1;
-        $this->mainImg2 = $mainImg2;
-        $this->mainImg3 = $mainImg3;
+        $this->facebook = $facebook;
+        $this->instagram = $instagram;
+        $this->mail = $mail;
+        $this->tumblr = $tumblr;
+        $this->main_img = $main_img;
+        $this->about_me = $about_me;
     }
 
-    public function getMainImg1()
+    public function getFacebook()
     {
-        return $this->mainImg1;
+        return $this->facebook;
     }
 
-    public function setMainImg1($mainImg1): void
+    public function setFacebook($facebook): void
     {
-        $this->mainImg1 = $mainImg1;
+        $this->facebook = $facebook;
     }
 
-    public function getMainImg2()
+    public function getInstagram()
     {
-        return $this->mainImg2;
+        return $this->instagram;
     }
 
-    public function setMainImg2($mainImg2): void
+    public function setInstagram($instagram): void
     {
-        $this->mainImg2 = $mainImg2;
+        $this->instagram = $instagram;
     }
 
-    public function getMainImg3()
+    public function getMail()
     {
-        return $this->mainImg3;
+        return $this->mail;
     }
 
-    public function setMainImg3($mainImg3): void
+    public function setMail($mail): void
     {
-        $this->mainImg3 = $mainImg3;
+        $this->mail = $mail;
+    }
+
+    public function getTumblr()
+    {
+        return $this->tumblr;
+    }
+
+    public function setTumblr($tumblr): void
+    {
+        $this->tumblr = $tumblr;
+    }
+
+    public function getMainImg()
+    {
+        return $this->main_img;
+    }
+
+    public function setMainImg($main_img): void
+    {
+        $this->main_img = $main_img;
+    }
+
+    public function getAboutMe()
+    {
+        return $this->about_me;
+    }
+
+    public function setAboutMe($about_me): void
+    {
+        $this->about_me = $about_me;
     }
 }

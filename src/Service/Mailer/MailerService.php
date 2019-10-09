@@ -1,8 +1,11 @@
 <?php
 
+/*
+ * This file is part of the "Stylish Portfolio" project.
+ * (c) Dzhezar Kadyrov <dzhezik@gmail.com>
+ */
 
 namespace App\Service\Mailer;
-
 
 use Swift_Mailer;
 use Swift_Message;
@@ -31,12 +34,12 @@ class MailerService implements MailerServiceInterface
                     [
                         'name' => $name,
                         'email' =>$email,
-                        'text' =>$text
+                        'text' =>$text,
                     ]
                 ),
                 'text/html'
             );
-        return $this->mailer->send($mail);
 
+        return $this->mailer->send($mail);
     }
 }

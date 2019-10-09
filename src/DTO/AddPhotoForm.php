@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * This file is part of the "Stylish Portfolio" project.
+ * (c) Dzhezar Kadyrov <dzhezik@gmail.com>
+ */
 
 namespace App\DTO;
 
@@ -9,7 +13,6 @@ class AddPhotoForm
 
     public function __construct(array $images = null)
     {
-
         $this->images = $images;
     }
 

@@ -1,0 +1,73 @@
+#carousel {
+    height: calc(100vh - 10px);
+    padding: 60px 0 65px 0;
+}
+.carousel-inner {
+    height: 100%;
+}
+.carousel-item {
+    height: inherit;
+}
+.carousel-item img {
+    display: block;
+    width: 75%;
+    margin: auto;
+    height: inherit;
+    object-fit: contain;
+}
+.arrow {
+    position: absolute;
+    bottom: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    color: #fff;
+    text-align: center;
+    padding: 0 4rem;
+}
+.arrow.previous {
+    left: 0;
+    display: none;
+}
+.arrow.next {
+    right: 0;
+}
+.arrow-icon{
+    color: black;
+    transition: all 0.3s ease-in;
+}
+.arrow-icon:hover{
+    color: red!important;
+}
+.control span {
+    background-image: unset!important;
+}
+.previous-button-icon {
+    display: inline-block;
+    background: transparent no-repeat center center;
+    background-size: 100% 100%;
+}
+.previous-button:hover {
+    bottom: 10px;
+}
+
+#counter {
+    position: absolute;
+    color: black;
+    bottom: 65px;
+    margin: 0 0 0 2rem;
+    text-align: right;
+    width: 8%;
+    padding: 2px;
+    border-bottom: solid thin black;
+    user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}

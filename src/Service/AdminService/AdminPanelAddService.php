@@ -1,16 +1,19 @@
 <?php
 
+/*
+ * This file is part of the "Stylish Portfolio" project.
+ * (c) Dzhezar Kadyrov <dzhezik@gmail.com>
+ */
 
 namespace App\Service\AdminService;
-
 
 use App\DTO\AddCategoryForm;
 use App\DTO\AddPhotoForm;
 use App\DTO\AddPhotoshootForm;
+use App\DTO\AddSinglePhotoForm;
 use App\Entity\Category;
 use App\Entity\Photoshoot;
 use App\Entity\PhotoshootImage;
-use App\Repository\MainPageRepository;
 use App\Repository\Photoshoot\PhotoshootRepository;
 use App\Repository\PhotoshootImage\PhotoshootImageRepository;
 use DateTime;
@@ -19,20 +22,17 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AdminPanelAddService implements AdminPanelAddServiceInterface
 {
-
     private $photoshootRepository;
     private $imageRepository;
     private $em;
     private $targetDirectory;
-    private $indexRepository;
 
-    public function __construct(PhotoshootRepository $photoshootRepository, PhotoshootImageRepository $imageRepository, EntityManagerInterface $em, $targetDirectory, MainPageRepository $indexRepository)
+    public function __construct(PhotoshootRepository $photoshootRepository, PhotoshootImageRepository $imageRepository, EntityManagerInterface $em, $targetDirectory)
     {
         $this->photoshootRepository = $photoshootRepository;
         $this->imageRepository = $imageRepository;
         $this->em = $em;
         $this->targetDirectory = $targetDirectory;
-        $this->indexRepository = $indexRepository;
     }
 
     public function getTargetDirectory()
@@ -46,8 +46,6 @@ class AdminPanelAddService implements AdminPanelAddServiceInterface
         $photoshoot
             ->setTitle($form->getTitle())
             ->setCategory($form->getCategory())
-            ->setShortDescription($form->getShortDescription())
-            ->setBackstage(false)
             ->setIsPosted(false)
             ->setPublicationDate(new DateTime());
         $this->em->persist($photoshoot);
@@ -75,7 +73,7 @@ class AdminPanelAddService implements AdminPanelAddServiceInterface
         $photoshoot = $this->photoshootRepository->findOneBy(['id' => $id]);
         $images = $form->getImages();
 
-        foreach ($images as $image){
+        foreach ($images as $image) {
             $filename = \sha1(\uniqid()) . '.' . $image->guessExtension();
             $path = $this->getTargetDirectory() . '/' . $id;
             $image->move($path, $filename);
@@ -85,8 +83,8 @@ class AdminPanelAddService implements AdminPanelAddServiceInterface
                 ->setPhotoshoot($photoshoot)
                 ->setImage($filename);
             $this->em->persist($photoshootImage);
-            $this->em->flush();
         }
+        $this->em->flush();
     }
 
     public function addCategory(AddCategoryForm $form)
@@ -97,6 +95,22 @@ class AdminPanelAddService implements AdminPanelAddServiceInterface
             ->setIsVisible(true);
 
         $this->em->persist($category);
+        $this->em->flush();
+    }
+
+    public function addSingleImage(AddSinglePhotoForm $form)
+    {
+        foreach ($form->getImages() as $image) {
+            $filename = \sha1(\uniqid()) . '.' . $image->guessClientExtension();
+            $path = $this->getTargetDirectory() . '/' . $form->getCategory()->getName();
+            $image->move($path, $filename);
+
+            $singleImg = new PhotoshootImage();
+            $singleImg
+                ->setCategory($form->getCategory())
+                ->setImage($filename);
+            $this->em->persist($singleImg);
+        }
         $this->em->flush();
     }
 }

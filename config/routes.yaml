@@ -1,15 +1,3 @@
-index:
-    path: /
-    controller: App\Controller\DefaultController::index
-portfolio:
-    path: /portfolio
-    controller: App\Controller\DefaultController::showPortfolio
-portfolioCategory:
-    path: /portfolio/{slug}
-    controller: App\Controller\DefaultController::showPortfolioCategory
-backstagePortfolio:
-    path: /backstage
-    controller: App\Controller\DefaultController::showBackstagePortfolio
 admin:
     path: /admin
     controller: App\Controller\Admin\AdminController::showAdminPanel
@@ -43,12 +31,20 @@ addCategory:
 adminPortfolioCategory:
     path: /admin/category/{slug}
     controller: App\Controller\Admin\AdminController::adminPortfolioCategory
-adminBackstages:
-    path: /admin/backstage
-    controller: App\Controller\Admin\AdminController::adminBackstages
+adminSinglePhotos:
+    path: /admin/single_photos
+    controller: App\Controller\Admin\AdminController::adminSinglePhotos
+addSinglePhotos:
+    path: /admin/add_single_photos
+    controller: App\Controller\Admin\AdminController::addSinglePhotos
+editSinglePhotos:
+    path: /admin/edit_single_photo/{id}
+    controller: App\Controller\Admin\AdminController::editSinglePhoto
+deleteSinglePhotos:
+    path: /admin/delete_single_photo{id}
+    controller: App\Controller\Admin\AdminController::deleteSinglePhoto
 editIndexInfo:
-    path: /admin/editIndex
+    path: /admin/editIndex/{type}
     controller: App\Controller\Admin\AdminController::editIndexInfo
-sendMail:
-    path: /sendMail
-    controller: App\Controller\DefaultController::sendMail
+
+

@@ -1,8 +1,11 @@
 <?php
 
+/*
+ * This file is part of the "Stylish Portfolio" project.
+ * (c) Dzhezar Kadyrov <dzhezik@gmail.com>
+ */
 
 namespace App\DTO;
-
 
 class AddCategoryForm
 {
@@ -10,7 +13,6 @@ class AddCategoryForm
 
     public function __construct(string $name = null)
     {
-
         $this->name = $name;
     }
 
@@ -23,6 +25,4 @@ class AddCategoryForm
     {
         $this->name = $name;
     }
-
-
 }

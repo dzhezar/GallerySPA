@@ -1,14 +1,16 @@
 <?php
 
+/*
+ * This file is part of the "Stylish Portfolio" project.
+ * (c) Dzhezar Kadyrov <dzhezik@gmail.com>
+ */
 
 namespace App\Form;
 
-
 use App\DTO\EditPhotoshootForm as EditPhotoshootFormDto;
 use App\Entity\Category;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\Category\CategoryRepository;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,11 +18,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditPhotoshootForm extends AbstractType
 {
-    private $em;
+    private $categoryRepository;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(CategoryRepository $categoryRepository)
     {
-        $this->em = $em;
+        $this->categoryRepository = $categoryRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -34,11 +36,8 @@ class EditPhotoshootForm extends AbstractType
                     return $category->getName();
                 },
             ])
-            ->add('shortDescription', TextType::class,[
-                'attr' => ['maxlength' => 255]
-            ])
-            ->add('backstage', CheckboxType::class,[
-                'required' => false
+            ->add('shortDescription', TextType::class, [
+                'attr' => ['maxlength' => 255],
             ])
         ;
     }
@@ -52,6 +51,17 @@ class EditPhotoshootForm extends AbstractType
 
     private function getCategories()
     {
-        return $this->em->getRepository(Category::class)->findAll();
+        $categories = $this->categoryRepository->findAll();
+        $array = [];
+
+        foreach ($categories as $category) {
+            $photoshoots = $category->getSingleImages();
+
+            if ($photoshoots->isEmpty()) {
+                \array_push($array, $category);
+            }
+        }
+
+        return $array;
     }
 }

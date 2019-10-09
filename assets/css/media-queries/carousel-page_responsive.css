@@ -1,0 +1,45 @@
+@media (max-width: 1390px) {
+    #carousel {
+        padding: 90px 0 65px 0;
+    }
+}
+@media (max-width: 768px) {
+    .main_img_text {
+        font-size: 100px;
+        line-height: 1;
+        text-align:center;
+    }
+    #counter {
+        margin-left: 1rem;
+        bottom: 30px;
+        width: 15%;
+        padding: unset;
+    }
+}
+@media (max-width: 680px) {
+    .carousel-item img {
+        width: 100%;
+    }
+
+    .control span {
+        position: absolute;
+        bottom: 5rem;
+    }
+    .carousel-item {
+        padding: 0 0 2.5rem;
+    }
+    .main_img {
+        background-size: 110vh;
+    }
+    .main_img_text {
+        font-size: 60px;
+    }
+}
+@media (max-width: 335px) {
+    #counter {
+        width: 18%;
+    }
+    .main_img_text {
+        font-size: 50px;
+    }
+}

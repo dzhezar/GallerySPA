@@ -33,6 +33,10 @@ class PhotoshootCollection implements \IteratorAggregate
         return \array_shift($this->photoshots);
     }
 
+    public function isEmpty(): bool
+    {
+        return empty($this->photoshots);
+    }
     public function getPhotoshoots(): array
     {
         return $this->photoshots;

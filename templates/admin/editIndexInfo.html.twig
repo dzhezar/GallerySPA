@@ -1,35 +1,18 @@
 {% extends 'admin/base.html.twig' %}
 
 {% block body %}
-
-<div class="card-body">
-    <div class="table-responsive">
-        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-            <thead>
-            <tr>
-                <th class="w-50">Current</th>
-                <th class="w-50">Change below</th>
-            </tr>
-            {{ form_start(form) }}
-            </thead>
-                <tr>
-                    <td class="text-center"><img style="height: 300px;width: 300px; object-fit: contain" src="/uploads/indexImages/{{ img.mainImg1 }}"></td>
-                    <td>{{ form_row(form.mainImg1) }}</td>
-                </tr>
-            <tr>
-                <td class="text-center"><img style="height: 300px;width: 300px; object-fit: contain" src="/uploads/indexImages/{{ img.mainImg2 }}"></td>
-                <td>{{ form_row(form.mainImg2) }}</td>
-            </tr>
-            <tr>
-                <td class="text-center"><img style="height: 300px;width: 300px; object-fit: contain" src="/uploads/indexImages/{{ img.mainImg3 }}"></td>
-                <td>{{ form_row(form.mainImg3) }}</td>
-            </tr>
-            <tr><td>{{ form_row(form.aboutMe) }}</td></tr>
-            </tbody>
-        </table>
-        <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="card-body">
+        {{ form_start(form) }}
+        {{ form_row(form.facebook) }}
+        {{ form_row(form.instagram) }}
+        {{ form_row(form.mail) }}
+        {{ form_row(form.tumblr) }}
+        {{ form_row(form.mainImg) }}
+        Current:
+        <img style="max-width: 300px;" src="/uploads/indexImages/{{ main_img }}">
+        {{ form_row(form.aboutMe) }}
         {{ form_end(form) }}
     </div>
-</div>
+
 {% endblock %}
 

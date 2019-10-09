@@ -1,0 +1,194 @@
+#footer {
+    position: unset!important;
+    bottom: unset!important;
+}
+.portfolio-wrapper {
+    padding: 80px 0 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.portfolio-item{
+    max-width: 50vw;
+    height: fit-content;
+}
+.portfolio-item:nth-child(4n+1) {
+    padding: 35px;
+}
+.portfolio-item:nth-child(4n+2):nth-child(4n+2) {
+    padding: 15px;
+}
+.portfolio-item:nth-child(4n+3):nth-child(4n+3) {
+    padding: 25px;
+}
+.portfolio-item:nth-child(4n+4):nth-child(4n+4) {
+    padding: 5px;
+}
+.portfolio-item:nth-child(4n+5):nth-child(4n+5) {
+    padding: 45px;
+}
+.portfolio-item:after {
+    flex-grow: 999999999;
+    content: '';
+}
+.portfolio-item a {
+    width: inherit;
+}
+.portfolio-item .img {
+    opacity: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+.portfolio-item img
+{
+    transition: all .2s ease-in;
+}
+.portfolio-item:hover img {
+    filter: blur(4px);
+}
+.portfolio-item:hover .caption {
+    background-color: rgba(0, 0, 0, 0.25);
+}
+.portfolio-item:hover .caption-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    background: #00000087;
+    box-shadow: inset 0 0 0 6px red;
+}
+.portfolio-item .caption {
+    display: flex;
+    width: inherit;
+    height: inherit;
+    max-width: 50vw;
+    position: absolute;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    transition: all 0.7s ease-in-out;
+}
+.portfolio-item .caption-text {
+    color: white;
+    height: 100%;
+    width: 100%;
+    font-style: normal;
+    font-size: 30px;
+    text-transform: uppercase;
+    text-decoration: underline;
+    line-height: normal;
+    display: none;
+    padding: 20px;
+    word-break: break-word;
+    user-select: none;
+    background-color: #000000;
+    transition: all 0.7s ease-in-out;
+    animation: fadeIn 0.7s;
+}
+.grid {
+    padding: 80px 0 0 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+.grid-item {
+    padding: 10px;
+    width: calc(100% / 3);
+}
+.grid-item:nth-child(4n+1) {
+    margin-bottom: 4%;
+    padding: 35px;
+}
+.grid-item:nth-child(4n+2):nth-child(4n+2) {
+    margin-bottom: 1%;
+    padding: 15px;
+}
+.grid-item:nth-child(4n+3):nth-child(4n+3) {
+    margin-bottom: 2%;
+    padding: 25px;
+}
+.grid-item:nth-child(4n+4):nth-child(4n+4) {
+    margin-bottom: 5%;
+    padding: 5px;
+}
+.grid-item:nth-child(4n+5):nth-child(4n+5) {
+    margin-bottom: 3%;
+    padding: 55px;
+}
+.grid-item:nth-child(4n+6):nth-child(4n+6) {
+    margin-bottom: 0.5%;
+    padding: 5px;
+}
+.grid-item a {
+    height: 100%;
+    width: 100%;
+}
+.grid-item img {
+    width: 100%;
+    vertical-align: bottom;
+    transition: all 0.7s ease-in-out;
+
+}
+.grid-item:hover img {
+    filter: blur(4px);
+}
+.grid-item:hover .caption {
+    background-color: rgba(0, 0, 0, 0.25);
+}
+.grid-item:hover .caption-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    background: rgba(0, 0, 0, 0.26);
+    box-shadow: inset 0 0 0 6px black;
+}
+.grid-item .caption {
+    display: flex;
+    height: calc(100% - 20px);
+    width: calc(100% - 20px);
+    position: absolute;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    transition: all 0.7s ease-in-out;
+}
+.grid-item .caption-text {
+    color: white;
+    height: 100%;
+    width: 100%;
+    font-style: normal;
+    font-size: 30px;
+    text-transform: uppercase;
+    text-decoration: underline black;
+    line-height: normal;
+    display: none;
+    padding: 20px;
+    word-break: break-word;
+    user-select: none;
+    background-color: #000000;
+    transition: all 0.7s ease-in-out;
+    animation: fadeIn 0.7s;
+}
+.grid-item-caption-text {
+    position: absolute;
+    top: 1rem;
+    font-size: xx-large;
+    z-index: 999999;
+    width: fit-content;
+    left: 0;
+    color: white;
+    text-decoration: underline black;
+    padding-left: 1rem;
+    font-weight: 800;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

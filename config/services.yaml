@@ -37,3 +37,4 @@ services:
     App\Service\AdminService\AdminPanelEditService:
         arguments:
             $targetDirectory: '%main_images_directory%'
+            $imagesDirectory: '%images_directory%'

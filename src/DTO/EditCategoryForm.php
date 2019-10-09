@@ -1,8 +1,11 @@
 <?php
 
+/*
+ * This file is part of the "Stylish Portfolio" project.
+ * (c) Dzhezar Kadyrov <dzhezik@gmail.com>
+ */
 
 namespace App\DTO;
-
 
 class EditCategoryForm
 {
@@ -34,6 +37,4 @@ class EditCategoryForm
     {
         $this->is_visible = $is_visible;
     }
-
-
 }

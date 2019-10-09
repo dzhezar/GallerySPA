@@ -1,8 +1,11 @@
 <?php
 
+/*
+ * This file is part of the "Stylish Portfolio" project.
+ * (c) Dzhezar Kadyrov <dzhezik@gmail.com>
+ */
 
 namespace App\Form;
-
 
 use App\DTO\AddCategoryForm as AddCategoryFormDto;
 use Symfony\Component\Form\AbstractType;
@@ -15,8 +18,8 @@ class AddCategoryForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class,[
-                'attr' => ['maxlength' => 255]
+            ->add('name', TextType::class, [
+                'attr' => ['maxlength' => 255],
             ])
         ;
     }

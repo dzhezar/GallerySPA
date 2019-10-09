@@ -16,18 +16,16 @@ class Photoshoot
     private $id;
     private $category;
     private $title;
-    private $shortDescription;
     private $isPosted;
     private $publicationDate;
     private $images;
     private $slug;
 
-    public function __construct(int $id, Category $category, string $title, string $shortDescription, bool $isPosted, DateTime $publicationDate, string $slug, PhotoshootImageCollection $images = null)
+    public function __construct(int $id, Category $category, string $title, bool $isPosted, DateTime $publicationDate, string $slug, PhotoshootImageCollection $images = null)
     {
         $this->id = $id;
         $this->category = $category;
         $this->title = $title;
-        $this->shortDescription = $shortDescription;
         $this->isPosted = $isPosted;
         $this->publicationDate = $publicationDate;
         $this->slug = $slug;
@@ -50,10 +48,6 @@ class Photoshoot
         return $this->category;
     }
 
-    public function getShortDescription()
-    {
-        return $this->shortDescription;
-    }
 
     public function isPosted(): bool
     {

@@ -1,0 +1,28 @@
+@media (max-width: 1290px) {
+    .portfolio-wrapper {
+        padding-top: 90px;
+    }
+}
+@media (max-width: 991px) {
+    .portfolio-wrapper {
+        padding-top: 50px;
+    }
+    .logo {
+        margin: unset;
+        padding: 20px 0;
+    }
+}
+@media (max-width: 768px) {
+    .grid-item {
+        width: calc(100% / 3);
+    }
+    .grid-item:last-child {
+        margin: unset!important;
+    }
+}
+@media (max-width: 518px) {
+    .grid-item {
+        transform: unset;
+        width: 100vw;
+    }
+}

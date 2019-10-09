@@ -12,10 +12,7 @@ use App\Photoshot\PhotoshootCollection;
 interface AdminPanelServiceInterface
 {
     public function getPhotoshoots(): PhotoshootCollection;
-    public function getPhotoshootsByCategory(string $slug, int $count = null): PhotoshootCollection;
-    public function getBackstages(): PhotoshootCollection;
+    public function getPhotoshootsByCategory(string $slug): PhotoshootCollection;
     public function getPhotoshootById(int $id);
-    public function getIndexInfo();
-    public function getIndexImg();
     public function setIsPosted(int $id, int $val);
 }

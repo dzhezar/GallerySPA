@@ -7,6 +7,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -51,20 +52,11 @@ class Photoshoot
     private $Category;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $ShortDescription;
-
-    /**
      * @Gedmo\Slug(fields={"Title"})
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $Backstage;
 
     public function __construct()
     {
@@ -84,18 +76,6 @@ class Photoshoot
     public function setTitle(string $Title): self
     {
         $this->Title = $Title;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->Description;
-    }
-
-    public function setDescription(string $Description): self
-    {
-        $this->Description = $Description;
 
         return $this;
     }
@@ -144,12 +124,12 @@ class Photoshoot
         return $this;
     }
 
-    public function getPublicationDate(): ?\DateTime
+    public function getPublicationDate(): ?DateTime
     {
         return $this->PublicationDate;
     }
 
-    public function setPublicationDate(\DateTime $PublicationDate): self
+    public function setPublicationDate(DateTime $PublicationDate): self
     {
         $this->PublicationDate = $PublicationDate;
 
@@ -168,18 +148,6 @@ class Photoshoot
         return $this;
     }
 
-    public function getShortDescription(): ?string
-    {
-        return $this->ShortDescription;
-    }
-
-    public function setShortDescription(string $ShortDescription): self
-    {
-        $this->ShortDescription = $ShortDescription;
-
-        return $this;
-    }
-
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -188,17 +156,5 @@ class Photoshoot
     public function setSlug($slug): void
     {
         $this->slug = $slug;
-    }
-
-    public function getBackstage(): ?bool
-    {
-        return $this->Backstage;
-    }
-
-    public function setBackstage(bool $Backstage): self
-    {
-        $this->Backstage = $Backstage;
-
-        return $this;
     }
 }

@@ -1,8 +1,11 @@
 <?php
 
+/*
+ * This file is part of the "Stylish Portfolio" project.
+ * (c) Dzhezar Kadyrov <dzhezik@gmail.com>
+ */
 
 namespace App\Form;
-
 
 use App\DTO\AddPhotoForm as AddPhotoFormAlias;
 use Symfony\Component\Form\AbstractType;
@@ -28,5 +31,4 @@ class AddPhotoForm extends AbstractType
             'data_class' => AddPhotoFormAlias::class,
         ]);
     }
-
 }

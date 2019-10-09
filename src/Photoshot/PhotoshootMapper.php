@@ -15,7 +15,7 @@ use App\PhotoshootImage\PhotoshootImageMapper;
 
 class PhotoshootMapper
 {
-    public function entityToDto(Photoshoot $entity): PhotoshotDto
+    public static function entityToDto(Photoshoot $entity): PhotoshotDto
     {
         $imagesMapper = new PhotoshootImageMapper();
         $collection = new PhotoshootImageCollection();
@@ -29,7 +29,6 @@ class PhotoshootMapper
             $entity->getId(),
             $entity->getCategory(),
             $entity->getTitle(),
-            $entity->getShortDescription(),
             $entity->getIsPosted(),
             $entity->getPublicationDate(),
             $entity->getSlug(),
@@ -37,26 +36,43 @@ class PhotoshootMapper
         );
     }
 
-    public function entityToDtoWithoutImages(Photoshoot $entity): PhotoshotDto
+    public static function entityToDtoWithoutImages(Photoshoot $entity): PhotoshotDto
     {
         return new PhotoshotDto(
             $entity->getId(),
             $entity->getCategory(),
             $entity->getTitle(),
-            $entity->getShortDescription(),
             $entity->getIsPosted(),
             $entity->getPublicationDate(),
             $entity->getSlug()
         );
     }
 
-    public function entityToEditFormDto(Photoshoot $entity): EditPhotoshootForm
+    public static function entityToEditFormDto(Photoshoot $entity): EditPhotoshootForm
     {
         return new EditPhotoshootForm(
             $entity->getTitle(),
-            $entity->getCategory(),
-            $entity->getShortDescription(),
-            $entity->getBackstage()
+            $entity->getCategory()
         );
+    }
+
+    public static function entityToArray(Photoshoot $entity): array
+    {
+        $photoshoots = $entity->getPhotoshootImages();
+        $array = [];
+
+        foreach ($photoshoots as $photoshoot) {
+            \array_push($array, PhotoshootImageMapper::entityToArray($photoshoot));
+        }
+        $first = \array_shift($array);
+
+        return [
+            'id' => $entity->getId(),
+            'category' => $entity->getCategory()->getName(),
+            'title' => $entity->getTitle(),
+            'slug' => $entity->getSlug(),
+            'first' => $first,
+            'photos' => $array,
+        ];
     }
 }

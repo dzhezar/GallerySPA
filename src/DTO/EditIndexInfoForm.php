@@ -1,8 +1,11 @@
 <?php
 
+/*
+ * This file is part of the "Stylish Portfolio" project.
+ * (c) Dzhezar Kadyrov <dzhezik@gmail.com>
+ */
 
 namespace App\DTO;
-
 
 class EditIndexInfoForm
 {
@@ -32,7 +35,7 @@ class EditIndexInfoForm
         $this->main_img1 = $main_img1;
     }
 
-     function getMainImg2()
+    public function getMainImg2()
     {
         return $this->main_img2;
     }
@@ -63,5 +66,4 @@ class EditIndexInfoForm
     {
         $this->aboutMe = $aboutMe;
     }
-
 }

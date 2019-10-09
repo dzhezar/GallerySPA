@@ -1,137 +1,66 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
-    {{ parent() }}
-    <style>
-        .header
-        {
-            position: inherit;
-            z-index: 0;
-        }
-    </style>
-{% endblock %}
-{% block header %}
-    <header>
-        <div>
-            <nav class="navbar navbar-expand-lg  bg-light header">
-                <div class="collapse navbar-collapse row" id="navbarNavAltMarkup">
-                    <div class="col-2">
-                        <a class="nav-link m-1" style="color: #af82df;" href={{ path('index') }}><h3>Back</h3></a>
-                    </div>
-                    <div class="col-8 ">
-                        <ul class="nav justify-content-around">
-                            <li class="nav-item my-auto">
-                                <a class="nav-link m-1" href={{ path('portfolio') }}><h3>All</h3></a>
-                            </li>
-                        {% for category in categories %}
-                            <li class="nav-item my-auto">
-                                <a class="nav-link m-1"style="width: max-content" href={{ path('portfolioCategory', {'slug': category.slug}) }}>
-                                    <h3>{{ category.name }}</h3>
-                                </a>
-                            </li>
-                        {% endfor %}
-                        {% if backstage is not empty %}
-                            <li class="nav-item my-auto">
-                                <a class="nav-link m-1" style="font-style: italic" href={{ path('backstagePortfolio') }}><h3>Backstage</h3></a>
-                            </li>
-                        {% endif %}
-                        </ul>
-                    </div>
-                    <div class="col-2 px-5">
-                        <div class="text-right">
-                            <h2 class="text-secondary mb-0 mt-1">Portfolio</h2>
-                            <h4 class="text-dark mb-0 mt-1">
-                            {% if categoryName is defined %}
-                                {{ categoryName }}
-                            {% else %}
-                                All
-                            {% endif %}
-                            </h4>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-        </div>
-        <!-- Navigation -->
-        <a class="menu-toggle rounded" id="menu-button" href="#">
-            <i class="fas fa-filter"></i>
-        </a>
-        <nav id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-nav-item">
-                    <a class="nav-link m-1" style="width: max-content" href={{ path('portfolio') }}><h3>All</h3></a>
-                </li>
-                {% for category in categories %}
-                    <li class="sidebar-nav-item">
-                        <a class="nav-link m-1" style="width: max-content" href={{ path('portfolioCategory', {'slug': category.slug}) }}><h3>{{ category.name }}</h3></a>
-                    </li>
-                {% endfor %}
-                {% if backstage is not empty %}
-                    <li class="sidebar-nav-item">
-                        <a class="nav-link m-1" style="width: max-content; font-style: italic" href={{ path('backstagePortfolio') }}><h3>Backstage</h3></a>
-                    </li>
-                {% endif %}
-            </ul>
-        </nav>
-    </header>
+{{ parent() }}
+<link href="{{ asset('css/grid-page.css') }}" rel="stylesheet">
+<link href="{{ asset('css/media-queries/grid-page_responsive.css') }}" rel="stylesheet">
 {% endblock %}
 {% block body %}
-    <div class="container-custom-portfolio">
-        <a class="nav-link position-absolute" id="menu-button" href={{ path('index') }}>
-            <i class="fas fa-2x py-2 fa-angle-left"></i>
-        </a>
-        <div class="content-section-heading text-center" id="portfolio-top">
-            <a href="{{ path('portfolio') }}"><h2 class="portfolio_title text-secondary mb-0 mt-3">Portfolio</h2></a>
-            {% if categoryName is defined %}
-                <h4 class="text-dark mt-2 offset-2">{{ categoryName }}</h4>
-            {% else %}
-                <h4 class="text-dark mb-2 offset-2">All</h4>
-            {% endif %}
-        </div>
-        {% if pagination is not empty %}
-        <div class="row no-gutters pt-6">
-            {% for photoshoot in pagination %}
-                <div class="col-lg-4 col-sm-6 portfolio-window">
-                    <a class="portfolio-item" data-fancybox data-src="#portfolio-item-{{ photoshoot.id }}" href="#">
-                            <span class="caption">
-                              <span class="caption-content">
-                                <h2>{{ photoshoot.title }}</h2>
-                                <p class="mb-0">{{ photoshoot.shortDescription }}</p>
-                              </span>
-                            </span>
-                        <img class="img-portfolio" src="/uploads/images/{{ photoshoot.id }}/{{ photoshoot.images.shiftU.image }}" alt="">
-                    </a>
-                    <div style="display: none" id="portfolio-item-{{ photoshoot.id }}">
-                        <div class="page-title photoshoot-title">
-                            <h2>{{ photoshoot.title | title}}</h2>
-                        </div>
-                        <div class="pt-2">
-                            <a href="uploads/images/{{ photoshoot.id }}/{{ photoshoot.images.shiftU.image }}" data-fancybox="gallery-{{ photoshoot.id }}">
-                                <img class="img-photoshoot" src="/uploads/images/{{ photoshoot.id }}/{{ photoshoot.images.shift.image }}" alt="">
-                            </a>
-                        </div>
-                        <div class="container-custom">
-                            {% for image in photoshoot.images %}
-                                <a href="uploads/images/{{ photoshoot.id }}/{{ image.image }}" data-fancybox="gallery-{{ photoshoot.id }}">
-                                    <img class="img-photoshoot" src="/uploads/images/{{ photoshoot.id }}/{{ image.image }}" alt="">
-                                </a>
-                            {% endfor %}
-                        </div>
-                    </div>
+    <div class="grid">
+        {% for photoshoot in photoshoots %}
+            <div class="grid-item">
+                <a href="/uploads/images/{{ photoshoot.id }}/{{ photoshoot.images.shiftU.image }}" data-fancybox="{{ photoshoot.slug }}">
+                  <span class="caption">
+                    <span class="caption-text">
+                      {{ photoshoot.title }}
+                    </span>
+                  </span>
+                    <img class="img" src="/uploads/images/{{ photoshoot.id }}/{{ photoshoot.images.shift.image }}" alt="">
+                </a>
+                <div class="display-none carousel-caption-text">
+                    {{ photoshoot.title }}
                 </div>
-            {% endfor %}
-        </div>
-        <div class=" mt-4">
-        {{ knp_pagination_render(pagination) }}
-        </div>
-        {% else %}
-            <div class="text-center">
-                <img style="max-width: 100vw" src="{{ asset('No-not-yet.png') }}" alt="">
+                <div class="display-none" id="portfolio-item-{{ photoshoot.id }}">
+
+                    {% for image in photoshoot.images %}
+                        <a href="/uploads/images/{{ photoshoot.id }}/{{ image.image }}" data-fancybox="{{ photoshoot.slug }}">
+                            <img class="img-photoshoot" src="/uploads/images/{{ photoshoot.id }}/{{ image.image }}" alt="">
+                        </a>
+                    {% endfor %}
+                </div>
             </div>
-        {% endif %}
+        {% endfor %}
     </div>
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#portfolio-top">
-        <i class="fas fa-2x align-middle fa-angle-up"></i>
-    </a>
-</div>
+{#    <div class="portfolio-wrapper">#}
+{#        {% for photoshoot in photoshoots %}#}
+{#            <div class="portfolio-item">#}
+{#                <a href="/uploads/images/{{ photoshoot.id }}/{{ photoshoot.images.shiftU.image }}" data-fancybox="{{ photoshoot.slug }}">#}
+{#                    <span class="caption">#}
+{#                        <span class="caption-text">#}
+{#                            {{ photoshoot.title }}#}
+{#                        </span>#}
+{#                    </span>#}
+{#                    <img class="img" src="/uploads/images/{{ photoshoot.id }}/{{ photoshoot.images.shift.image }}" alt="">#}
+{#                </a>#}
+{#                <div class="display-none" id="portfolio-item-{{ photoshoot.id }}">#}
+{#                    {% for image in photoshoot.images %}#}
+{#                        <a href="/uploads/images/{{ photoshoot.id }}/{{ image.image }}" data-fancybox="{{ photoshoot.slug }}">#}
+{#                            <img class="img-photoshoot" src="/uploads/images/{{ photoshoot.id }}/{{ image.image }}" alt="">#}
+{#                        </a>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#    </div>#}
+
+{% endblock %}
+{% block js %}
+    {{ parent() }}
+    <script src="{{ asset('js/grid-page.js') }}"></script>
+    <script>
+
+        $('#carousel').fadeIn();
+        // $('#main-nav').fadeIn();
+        // $('#footer').fadeIn();
+
+    </script>
 {% endblock %}
